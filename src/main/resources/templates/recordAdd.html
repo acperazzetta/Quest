@@ -1,0 +1,93 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+   <head>
+      <meta charset="UTF-8" />
+      <title>Add Record</title>
+      <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+      <script src="http://code.jquery.com/jquery-2.1.1.min.js"></script>
+      <script th:src="@{/js/jquery.validate.min.js}"></script>
+   </head>
+   <body>
+      <h1>Create a Record:</h1>
+      <a th:href="@{/index}">Return to initial Page</a>
+       
+      <form th:action="@{/recordAdd}" th:object="${record}" method="POST" id="form" name="form">
+      
+      <table border="0">
+        <tr>
+          <td>Name *:</td>
+          <td><input type="text" th:field="*{name}" maxlength="25" required="required" id="name"/></td>
+        <tr>
+        <tr>
+          <td>PPS Number *:</td>
+          <td>
+            <input type="text" th:field="*{ppsNumber}" required="required" id="pps"/>     
+            <div th:if="${errorMessage}" th:utext="${errorMessage}" style="color:red;font-style:italic;"></div>
+         </td>
+        <tr>
+        <tr>
+          <td>Date of Birth *:</td>
+          <td><input type="date" th:field="*{dob}" id="dob" required="required" /></td>
+        <tr>
+        <tr>
+          <td>Mobile Number:</td>
+          <td><input type="text" th:field="*{mobileNumber}" id="mobileNumber" maxlength="10"/></td>
+        <tr>
+        <tr>
+          <td colspan="2"><input type="submit" value="Create" /></td>
+        </tr>
+      </table>
+      <div>* Mandatory Fields</div>
+      </form>
+<script>
+
+$.validator.addMethod("maxDate", function(value, element) {
+  var curDate = new Date();
+  var inputDate = new Date(value);
+  if (inputDate < curDate)
+      return true;
+  return false;
+}, "The date can't be higher than Today.");   // error message
+
+$.validator.addMethod("over16", function(value, element) {
+  var age16 = new Date();
+  age16.setFullYear(age16.getFullYear() - 16);
+  var inputDate = new Date(value);
+  if (inputDate < age16)
+      return true;
+  return false;
+}, "The person must be over 16 year old!");   // error message
+
+$.validator.addMethod("prefixNumber", function(value, element) {
+	//alert(value);
+  if (!value.trim() || value.substr( 0, 2 ) == "08")
+      return true;
+  return false;
+}, "Please, insert a valid number.");   // error message
+
+$("#form").validate({
+  rules: {
+      name: {
+      	required:true
+      },
+      pps: {
+        required:true
+      },
+      dob: {
+	      required: true,
+	      date: true,
+	      maxDate: true,
+	      over16: true
+      },
+      mobileNumber: {
+      	digits: true,
+      	prefixNumber: true
+      }
+  }
+});
+
+</script>   
+       
+      <br/>
+   </body>
+</html>

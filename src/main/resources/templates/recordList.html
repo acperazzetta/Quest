@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>Record List</title>
+<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+</head>
+<body>
+	<h1>Record List</h1>
+	<a th:href="@{/index}">Return to initial Page</a>
+	<br />
+	<br />
+	<div>
+		<table border="1">
+			<tr>
+				<th>Name</th>
+				<th>PPS Number</th>
+				<th>Date of Birth</th>
+				<th>Mobile Number</th>
+			</tr>
+			<tr th:if="${#lists.isEmpty(records)}">
+				<td colspan="4">No Records have been created</td>
+			</tr>
+			<tr th:each="record, rowStat : ${records}" th:style="${rowStat.odd} ? 'background-color: white' : 'background-color: lightgray;'">
+				<td th:utext="${record.name}">...</td>
+				<td th:utext="${record.ppsNumber}">...</td>
+				<td th:utext="${record.dob}">...</td>
+				<td th:utext="${record.mobileNumber}">...</td>
+			</tr>
+		</table>
+	</div>
+</body>
+</html>
